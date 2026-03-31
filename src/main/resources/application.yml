@@ -1,0 +1,68 @@
+################################################ Server 설정 ################################################
+server:
+  port: 8080
+
+################################################ SPRING BOOT ################################################
+spring:
+  profiles:
+    active: local
+
+  application:
+    name: boot-generator
+
+  # ============================ DB 자동 설정 제거 =======================================
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration # jpa
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration # jpa
+#      - org.springframework.boot.jdbc.autoconfigure.DataSourceInitializationAutoConfiguration # mtbatis
+#      - org.springframework.boot.transaction.autoconfigure.TransactionManagerCustomizationAutoConfiguration # mtbatis
+
+# ==================================== Swagger 설정 ====================================
+springdoc:
+  auto-response-codes: false
+  swagger-ui:
+    path: /swagger
+  api-docs:
+    path: /swagger/docs
+    groups:
+      enabled: true
+  cache:
+    disabled: true
+  api-info:
+    title: Boot Generator
+    description: API in/out for AMIS 3.0
+    version: 1.0.0
+    terms-of-service: http://bootgen.com/termsofservice
+    contact:
+      name: Administrator
+      url: https://bootgen.com
+      email: admin@bootgen.com
+    license:
+      name: MIT License
+      url: https://bootgen.com/license
+
+generator:
+  project:
+    - name: test-backend-sevice
+      pattern: mvc #mvc/cqrs
+      orm: jpa #jpa/mybatis
+      hikari-config:
+        driver-class-name: 'org.postgresql.Driver' # designed to use PostgreSQL
+        jdbc-url: 'jdbc:postgresql://127.0.0.1/postgres'
+        username: 'postgres'
+        password: 'postgres'
+      schema-filter: 'public' # must set full name
+      table-filter: '%test%' # set '%' for all
+      column-filter: '%' # rather not change
+    - name: notification-stream-sevice
+      pattern: mvc #mvc/cqrs
+      orm: jpa #jpa/mybatis
+      hikari-config:
+        driver-class-name: 'org.postgresql.Driver' # designed to use PostgreSQL
+        jdbc-url: 'jdbc:postgresql://127.0.0.1/postgres'
+        username: 'postgres'
+        password: 'postgres'
+      schema-filter: 'notification' # must set full name
+      table-filter: '%' # set '%' for all
+      column-filter: '%' # rather not change

@@ -1,0 +1,78 @@
+pluginManagement {
+    repositories {
+
+        gradlePluginPortal()
+        mavenCentral()
+
+//        def NEXUS_URL = settings.hasProperty('NEXUS_URL') ? settings.NEXUS_URL : System.getenv('NEXUS_URL')
+//        def NEXUS_PUBLIC_REPOSITORY = settings.hasProperty('NEXUS_PUBLIC_REPOSITORY') ? settings.NEXUS_PUBLIC_REPOSITORY : (System.getenv('NEXUS_SNAPSHOT_REPOSITORY') ?: 'maven-public')
+//        def NEXUS_ID = settings.hasProperty('NEXUS_ID') ? settings.NEXUS_ID : System.getenv('NEXUS_ID')
+//        def NEXUS_PASSWORD = settings.hasProperty('NEXUS_PASSWORD') ? settings.NEXUS_PASSWORD : System.getenv('NEXUS_PASSWORD')
+//
+//        // 내부 Nexus 우선
+//        maven {
+//            url = "${NEXUS_URL}/repository/${NEXUS_PUBLIC_REPOSITORY}"   // 문자열 보간 O
+//            allowInsecureProtocol = true
+//            credentials {
+//                username = NEXUS_ID ?: "nexususer"            // 그냥 변수명 O
+//                password = NEXUS_PASSWORD ?: "nexuspassword"  // 그냥 변수명 O
+//            }
+//        }
+//
+//        maven {
+//            url = "${NEXUS_URL}/repository/gradle-plugins"
+//            allowInsecureProtocol = true
+//            credentials {
+//                username = NEXUS_ID ?: "nexususer"
+//                password = NEXUS_PASSWORD ?: "nexuspassword"
+//            }
+//        }
+    }
+
+    plugins {
+        id "org.springframework.boot" version "3.5.13"
+    }
+}
+
+
+println("### Checking version catalogs ###")
+def branchName = providers.gradleProperty("branchName").getOrElse("")
+println("# Branch name: $branchName")
+def scope = branchName.empty ? "local." : branchName.contains("refs/tags/") || branchName.contains("stg") ? "release." : "snapshot."
+println("# Scope: $scope")
+def catalog = "gradle/libs.versions.${scope}toml"
+println("# Catalog path: $catalog")
+
+dependencyResolutionManagement {
+
+    versionCatalogs {
+        create("libs") {
+            from(files("gradle/libs.versions.common.toml"))
+        }
+
+        create("boot") {
+            from(files("gradle/boot.versions.${scope}toml"))
+        }
+    }
+
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+//        def NEXUS_URL = settings.hasProperty('NEXUS_URL') ? settings.NEXUS_URL : System.getenv('NEXUS_URL')
+//        def NEXUS_PUBLIC_REPOSITORY = settings.hasProperty('NEXUS_PUBLIC_REPOSITORY') ? settings.NEXUS_PUBLIC_REPOSITORY : (System.getenv('NEXUS_PUBLIC_REPOSITORY') ?: 'maven-public')
+//        def NEXUS_ID = settings.hasProperty('NEXUS_ID') ? settings.NEXUS_ID : System.getenv('NEXUS_ID')
+//        def NEXUS_PASSWORD = settings.hasProperty('NEXUS_PASSWORD') ? settings.NEXUS_PASSWORD : System.getenv('NEXUS_PASSWORD')
+//
+//        // 내부 Nexus 우선
+//        maven {
+//            url = "${NEXUS_URL}/repository/${NEXUS_PUBLIC_REPOSITORY}"
+//            allowInsecureProtocol = true
+//            credentials {
+//                username = NEXUS_ID ?: "nexususer"
+//                password = NEXUS_PASSWORD ?: "nexuspassword"
+//            }
+//        }
+    }
+}
+
+rootProject.name = 'boot-generator'
