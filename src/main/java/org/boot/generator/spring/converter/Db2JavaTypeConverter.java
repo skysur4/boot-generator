@@ -13,8 +13,11 @@ public class Db2JavaTypeConverter {
     static {
         // Numeric types
         typeMap.put("int2", Short.class);          // SMALLINT
+        typeMap.put("smallint", Short.class);      // SMALLINT
         typeMap.put("int4", Integer.class);        // INTEGER
+        typeMap.put("integer", Integer.class);     // INTEGER
         typeMap.put("int8", Long.class);           // BIGINT
+        typeMap.put("bigint", Long.class);         // BIGINT
         typeMap.put("serial", Integer.class);      // SERIAL
         typeMap.put("bigserial", Long.class);      // BIGSERIAL
         typeMap.put("numeric", BigDecimal.class);  // NUMERIC/DECIMAL
@@ -29,12 +32,14 @@ public class Db2JavaTypeConverter {
         typeMap.put("char", String.class);
         typeMap.put("varchar", String.class);
         typeMap.put("text", String.class);
+        typeMap.put("character varying", String.class);
 
         // Date/Time types
         typeMap.put("date", LocalDate.class);
         typeMap.put("time", LocalTime.class);
         typeMap.put("timestamp", LocalDateTime.class);
         typeMap.put("timestamptz", LocalDateTime.class); // with timezone
+        typeMap.put("timestamp without time zone", LocalDateTime.class); // without timezone
 
         // Binary
         typeMap.put("bytea", byte[].class);
@@ -47,10 +52,6 @@ public class Db2JavaTypeConverter {
     }
 
     public static Class<?> getJavaType(String postgresType) {
-        return typeMap.getOrDefault(postgresType.toLowerCase(), Unknown.class);
-    }
-
-    public class Unknown {
-    	// 매칭 할 수 없는 타입 정보
+        return typeMap.getOrDefault(postgresType.toLowerCase(), String.class);
     }
 }

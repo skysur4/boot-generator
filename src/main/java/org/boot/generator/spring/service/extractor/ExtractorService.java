@@ -1,26 +1,25 @@
-package org.boot.generator.spring.service;
+package org.boot.generator.spring.service.extractor;
 
 import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.boot.generator.spring.converter.Db2JavaTypeConverter;
+import org.boot.generator.spring.generator.JpaCoder;
 import org.boot.generator.spring.meta.*;
 import org.boot.generator.spring.properties.ProjectProperties;
-import org.postgresql.Driver;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProjectExtractor {
+public class ExtractorService {
 
     private final ProjectProperties projectProperties;
+    private final JpaCoder jpaCoder;
 
     public List<GenProject> extractProject() throws Exception {
         List<GenProject> projectList = Lists.newArrayList();
@@ -199,7 +198,10 @@ public class ProjectExtractor {
 
             }// hikariConfig
 
-            projectList.add(project.build());
+            GenProject getProject = project.build();
+            jpaCoder.generate(getProject, projectProperties.getDestinationPath());
+
+            projectList.add(getProject);
 
         }// projectConfig
 

@@ -65,6 +65,8 @@ dependencies {
     implementation libs.google.guava
     // swagger
     implementation libs.swagger.mvc
+    // freemarker
+    implementation libs.apache.freemarker
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
