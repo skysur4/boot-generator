@@ -43,6 +43,7 @@ springdoc:
       url: https://bootgen.com/license
 
 generator:
+  destination-path: '../'
   project:
     - name: test-backend-sevice
       pattern: mvc #mvc/cqrs
