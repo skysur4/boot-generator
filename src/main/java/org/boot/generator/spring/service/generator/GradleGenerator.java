@@ -29,6 +29,7 @@ public class GradleGenerator {
         projectModel.put("package", packagePath);
         projectModel.put("group", project.getGroup());
         projectModel.put("name", project.getName());
+        projectModel.put("desc", project.getDesc());
         projectModel.put("orm", project.getOrm());
 
         GeneratorUtils.writeFile(project.getDestinationPath(), "build" + GRADLE_EXTENSION,
@@ -36,6 +37,9 @@ public class GradleGenerator {
 
         GeneratorUtils.writeFile(project.getDestinationPath(), "settings" + GRADLE_EXTENSION,
                 templateRenderer.render(GRADLE_ARCHITECTURE, "settings.ftl", projectModel));
+
+        GeneratorUtils.writeFile(project.getDestinationPath(), "README.md",
+                templateRenderer.render(GRADLE_ARCHITECTURE, "readme.ftl", projectModel));
 
         try {
             GeneratorUtils.copyRawFiles(templateRenderer.loadRawFilesFrom("raw"), project.getDestinationPath());

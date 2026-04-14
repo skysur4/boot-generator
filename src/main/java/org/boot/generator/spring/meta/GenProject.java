@@ -12,6 +12,7 @@ import java.util.List;
 public class GenProject {
     private String name;
     private String group;
+    private String desc;
     private String architecture;
     private String orm;
     private String driverClassName;

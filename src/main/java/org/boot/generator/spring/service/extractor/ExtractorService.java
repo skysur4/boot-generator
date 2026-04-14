@@ -31,18 +31,20 @@ public class ExtractorService {
 
             GenProject.GenProjectBuilder project = GenProject.builder();
 
+            project.name(projectConfig.getName())
+                    .group(projectConfig.getGroup())
+                    .desc(projectConfig.getDesc())
+                    .architecture(projectConfig.getArchitecture())
+                    .orm(projectConfig.getOrm())
+                    .localPort(projectConfig.getLocalPort())
+                    .destinationPath(projectConfig.getDestinationPath());
+
             if (StringUtils.hasText(projectConfig.getOrm())) {
 
-                project.name(projectConfig.getName())
-                        .group(projectConfig.getGroup())
-                        .architecture(projectConfig.getArchitecture())
-                        .orm(projectConfig.getOrm())
-                        .destinationPath(projectConfig.getDestinationPath())
-                        .driverClassName(hikariConfig.getDriverClassName())
+                project.driverClassName(hikariConfig.getDriverClassName())
                         .dbUrl(hikariConfig.getJdbcUrl())
                         .dbUsername(hikariConfig.getUsername())
-                        .dbPassword(hikariConfig.getPassword())
-                        .localPort(projectConfig.getLocalPort());
+                        .dbPassword(hikariConfig.getPassword());
 
                 /* 스키마 추출 */
                 try (Connection conn = getConnection(hikariConfig)) {
@@ -229,15 +231,6 @@ public class ExtractorService {
                     project.schemas(schemaList);
 
                 }// hikariConfig
-
-            } else { // if orm not used
-
-                project.name(projectConfig.getName())
-                        .group(projectConfig.getGroup())
-                        .architecture(projectConfig.getArchitecture())
-                        .orm(projectConfig.getOrm())
-                        .destinationPath(projectConfig.getDestinationPath())
-                        .localPort(projectConfig.getLocalPort());
 
             }
 

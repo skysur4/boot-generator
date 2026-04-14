@@ -21,6 +21,7 @@ public class ProjectProperties {
     public static class ProjectConfig {
         private String name;
         private String group;
+        private String desc;
         private String architecture;
         private String orm;
         private HikariConfig hikariConfig;

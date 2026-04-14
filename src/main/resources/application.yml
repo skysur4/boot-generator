@@ -45,6 +45,7 @@ generator:
   project:
     - name: test-backend
       group: bootgen-com
+      desc: 보스 딜량 관리
       architecture: mvc #mvc/crs/qrs
       orm: jpa #jpa/mybatis or blank if no datasource applicable
       hikari-config:
@@ -55,13 +56,14 @@ generator:
       schema-filter: 'public' # must set full name
       table-filter: '%' # set '%' for all
       column-filter: '%' # rather not change
-      destination-path: "file:${generator.base-path}/test-backend-service"
       local-port: 7070
+      destination-path: "file:${generator.base-path}/test-backend-service"
     - name: notification-stream
       group: bootgen-com
+      desc: no orm test
       architecture: mvc #mvc/crs/qrs
       orm:
       table-filter: '%' # set '%' for all
       column-filter: '%' # rather not change
-      destination-path: "file:${generator.base-path}/notification-stream-service"
       local-port: 7071
+      destination-path: "file:${generator.base-path}/notification-stream-service"

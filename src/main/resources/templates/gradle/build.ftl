@@ -28,7 +28,7 @@ ext {
 
 group = '${group}'
 version = BUILD_NUMBER
-description = 'Boot Generator'
+description = '${desc}'
 <#noparse>
 println "[ project.group ] : ${group}"
 println "[ project.version ] : ${version}"
