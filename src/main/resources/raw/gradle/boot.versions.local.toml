@@ -1,0 +1,7 @@
+[versions]
+# COMMON
+# commonCore = "0.0.1-SNAPSHOT"
+
+[libraries]
+# COMMON
+# common-core = { module = "boot.generator:boot-generator-common-core", version.ref = "commonCore" }

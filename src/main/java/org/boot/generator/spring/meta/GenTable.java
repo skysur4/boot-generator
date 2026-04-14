@@ -1,6 +1,5 @@
 package org.boot.generator.spring.meta;
 
-import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +17,6 @@ public class GenTable {
     private List<GenColumn> columns;
     private List<GenPrimaryKey> primaryKeys;
     private List<GenForeignKey> foreignKeys;
+    private List<GenExportedKey> exportedKeys;
     private List<GenIndex> indices;
 }

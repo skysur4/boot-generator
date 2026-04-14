@@ -1,8 +1,8 @@
 package org.boot.generator.spring.meta;
 
-import com.google.common.collect.Lists;
 import lombok.*;
 
+import java.nio.file.Path;
 import java.util.List;
 
 @ToString
@@ -11,7 +11,14 @@ import java.util.List;
 @AllArgsConstructor
 public class GenProject {
     private String name;
+    private String group;
     private String architecture;
-    private String dbFramework;
+    private String orm;
+    private String driverClassName;
+    private String dbUrl;
+    private String dbUsername;
+    private String dbPassword;
     private List<GenSchema> schemas;
+    private Path destinationPath;
+    private String localPort;
 }

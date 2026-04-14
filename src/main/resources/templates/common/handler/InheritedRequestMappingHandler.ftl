@@ -1,17 +1,16 @@
-package org.boot.generator.spring.handler;
-
-import org.jspecify.annotations.NonNull;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+package ${package}.common.handler;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
 public class InheritedRequestMappingHandler extends RequestMappingHandlerMapping {
   @Override
-  protected RequestMappingInfo getMappingForMethod(@NonNull Method method, @NonNull Class<?> handlerType) {
+  protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
     RequestMappingInfo requestMappingInfo = super.getMappingForMethod(method, handlerType);
 
     // 요청 URL 정보가 없을 경우 null을 반환합니다.
@@ -25,7 +24,7 @@ public class InheritedRequestMappingHandler extends RequestMappingHandlerMapping
     // 클래스에 @RequestMapping 값이 존재할 경우 Pattern을 추가합니다.
     for (; superclass != Object.class; superclass = superclass.getSuperclass()) {
       if (superclass.isAnnotationPresent(RequestMapping.class)) {
-        superclassUrlPatterns.add(superclass.getAnnotation(RequestMapping.class).value()[0]);
+        superclassUrlPatterns.add(0, superclass.getAnnotation(RequestMapping.class).value()[0]);
       }
     }
 

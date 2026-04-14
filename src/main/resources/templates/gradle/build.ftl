@@ -26,14 +26,14 @@ ext {
     NEXUS_SNAPSHOT_REPOSITORY = project.findProperty('NEXUS_SNAPSHOT_REPOSITORY') ?: (System.getenv('NEXUS_SNAPSHOT_REPOSITORY') ?: 'maven-snapshot')
 }
 
-group = 'boot.generator'
+group = '${group}'
 version = BUILD_NUMBER
 description = 'Boot Generator'
-
+<#noparse>
 println "[ project.group ] : ${group}"
 println "[ project.version ] : ${version}"
 println "[ project.description ] : ${description}"
-
+</#noparse>
 allprojects {
     configurations.configureEach {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
@@ -58,11 +58,18 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     // database
+<#if orm?has_content>
     implementation 'org.postgresql:postgresql'
-//    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    <#if orm == "jpa">
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation libs.mybatis.starter
-    implementation libs.mybatis
+    </#if>
+    <#if orm == "mybatis">
+    implementation libs.mybatis.starter
+    </#if>
+    <#else>
+    implementation 'org.springframework.data:spring-data-commons'
+</#if>
 
     // uuid
     implementation libs.uuid.generator
@@ -85,6 +92,7 @@ java {
 
 bootJar  {
     enabled = false
+    mainClass = '${basePackage}.Application'
 }
 
 jar {

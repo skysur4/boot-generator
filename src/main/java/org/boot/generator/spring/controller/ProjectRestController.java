@@ -3,7 +3,7 @@ package org.boot.generator.spring.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.boot.generator.spring.common.BaseRestController;
+import org.boot.generator.spring.service.generator.ApplicationGenerator;
 import org.boot.generator.spring.meta.GenProject;
 import org.boot.generator.spring.service.extractor.ExtractorService;
 import org.boot.generator.spring.util.GeneratorUtils;
@@ -18,8 +18,10 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
-public class ProjectRestController extends BaseRestController {
+public class ProjectRestController {
+
     private final ExtractorService extractorService;
+    private final ApplicationGenerator applicationGenerator;
 
     @Operation(summary = "프로젝트 생성", description = "DB 정보를 기반으로 프로젝트 생성")
     @PostMapping
@@ -32,6 +34,10 @@ public class ProjectRestController extends BaseRestController {
                     log.info("# Extracted base package: {}", GeneratorUtils.toBasePackage(project.getName()));
 
                     String message = GeneratorUtils.toBasePackage(project.getName()) + "\n";
+
+                    // 프로젝트 생성
+                    applicationGenerator.generate(project);
+
                     outputStream.write(message.getBytes());
                     outputStream.flush(); // Flush the buffer to send the chunk immediately
                 }

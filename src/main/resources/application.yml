@@ -13,10 +13,8 @@ spring:
   # ============================ DB 자동 설정 제거 =======================================
   autoconfigure:
     exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration # jpa
       - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration # jpa
-#      - org.springframework.boot.jdbc.autoconfigure.DataSourceInitializationAutoConfiguration # mtbatis
-#      - org.springframework.boot.transaction.autoconfigure.TransactionManagerCustomizationAutoConfiguration # mtbatis
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration # jpa
 
 # ==================================== Swagger 설정 ====================================
 springdoc:
@@ -43,27 +41,27 @@ springdoc:
       url: https://bootgen.com/license
 
 generator:
-  destination-path: '../'
+  base-path: '..'
   project:
-    - name: test-backend-sevice
-      pattern: mvc #mvc/cqrs
-      orm: jpa #jpa/mybatis
+    - name: test-backend
+      group: bootgen-com
+      architecture: mvc #mvc/crs/qrs
+      orm: jpa #jpa/mybatis or blank if no datasource applicable
       hikari-config:
         driver-class-name: 'org.postgresql.Driver' # designed to use PostgreSQL
-        jdbc-url: 'jdbc:postgresql://127.0.0.1/postgres'
-        username: 'postgres'
-        password: 'postgres'
+        jdbc-url: 'jdbc:postgresql://192.168.50.210:5432/home'
+        username: 'admin'
+        password: 'admin'
       schema-filter: 'public' # must set full name
-      table-filter: '%test%' # set '%' for all
-      column-filter: '%' # rather not change
-    - name: notification-stream-sevice
-      pattern: mvc #mvc/cqrs
-      orm: jpa #jpa/mybatis
-      hikari-config:
-        driver-class-name: 'org.postgresql.Driver' # designed to use PostgreSQL
-        jdbc-url: 'jdbc:postgresql://127.0.0.1/postgres'
-        username: 'postgres'
-        password: 'postgres'
-      schema-filter: 'notification' # must set full name
       table-filter: '%' # set '%' for all
       column-filter: '%' # rather not change
+      destination-path: "file:${generator.base-path}/test-backend-service"
+      local-port: 7070
+    - name: notification-stream
+      group: bootgen-com
+      architecture: mvc #mvc/crs/qrs
+      orm:
+      table-filter: '%' # set '%' for all
+      column-filter: '%' # rather not change
+      destination-path: "file:${generator.base-path}/notification-stream-service"
+      local-port: 7071

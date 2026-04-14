@@ -1,7 +1,6 @@
 package org.boot.generator.spring.properties;
 
 import com.zaxxer.hikari.HikariConfig;
-import jakarta.activation.DataSource;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -15,18 +14,24 @@ import java.util.List;
 @Configuration
 @ConfigurationProperties(prefix = "generator")
 public class ProjectProperties {
-    private Path destinationPath;
     private List<ProjectConfig> project;
 
     @Getter
     @Setter
     public static class ProjectConfig {
         private String name;
-        private String pattern;
+        private String group;
+        private String architecture;
         private String orm;
         private HikariConfig hikariConfig;
         private String schemaFilter;
         private String tableFilter;
         private String columnFilter;
+        private Path destinationPath;
+        private String localPort;
+
+        public void setLocalPort(Integer localPort){
+            this.localPort = (localPort == null || localPort < 80) ? "80" : String.valueOf(localPort);
+        }
     }
 }

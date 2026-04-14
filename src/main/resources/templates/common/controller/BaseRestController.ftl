@@ -1,4 +1,4 @@
-package org.boot.generator.spring.common;
+package ${package}.common.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
