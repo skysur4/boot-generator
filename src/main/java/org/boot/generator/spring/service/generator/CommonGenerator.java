@@ -69,6 +69,9 @@ public class CommonGenerator {
         GeneratorUtils.writeFile(commonPath, "controller", "BaseRestController" + JAVA_EXTENSION,
                 templateRenderer.render(COMMON_ARCHITECTURE, "controller/BaseRestController.ftl", commonModel));
 
+        GeneratorUtils.writeFile(commonPath, "service", "BaseService" + JAVA_EXTENSION,
+                templateRenderer.render(COMMON_ARCHITECTURE, "service/BaseService.ftl", commonModel));
+
         GeneratorUtils.writeFile(commonPath, "handler", "InheritedRequestMappingHandler" + JAVA_EXTENSION,
                 templateRenderer.render(COMMON_ARCHITECTURE, "handler/InheritedRequestMappingHandler.ftl", commonModel));
 
@@ -101,6 +104,9 @@ public class CommonGenerator {
             GeneratorUtils.writeFile(commonPath, "entity", "BaseEntity" + JAVA_EXTENSION,
                     templateRenderer.render(COMMON_ARCHITECTURE, "entity/BaseEntity.ftl", commonModel));
 
+            GeneratorUtils.writeFile(commonPath, "entity", "BaseInfo" + JAVA_EXTENSION,
+                    templateRenderer.render(COMMON_ARCHITECTURE, "entity/BaseInfo.ftl", commonModel));
+
             GeneratorUtils.writeFile(commonPath, "repository", "BaseRepository" + JAVA_EXTENSION,
                     templateRenderer.render(COMMON_ARCHITECTURE, "repository/BaseRepository.ftl", commonModel));
 
@@ -111,9 +117,9 @@ public class CommonGenerator {
         // Mybatis Datasource 사용 시
         if(MYBATIS_ORM.equalsIgnoreCase(project.getOrm())){
 
-            GeneratorUtils.writeFile(commonPath, "model", "BaseModel" + JAVA_EXTENSION,
-                    templateRenderer.render(COMMON_ARCHITECTURE, "model/BaseModel.ftl", commonModel));
-
         }
+
+        GeneratorUtils.writeFile(commonPath, "model", "BaseResponse" + JAVA_EXTENSION,
+                templateRenderer.render(COMMON_ARCHITECTURE, "model/BaseResponse.ftl", commonModel));
     }
 }

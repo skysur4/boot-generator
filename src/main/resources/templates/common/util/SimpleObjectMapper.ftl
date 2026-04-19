@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import org.springframework.util.ObjectUtils;
 import org.springframework.data.domain.Page;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +30,7 @@ public class SimpleObjectMapper extends ObjectMapper {
 	}
 
 	public <E, D> D map(E item, Class<D> clazz) {
+	    if(ObjectUtils.isEmpty(item)) return null;
 	    return this.objectMapper.convertValue(item, clazz);
 	}
 

@@ -39,7 +39,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class SearchRequest implements Serializable {
 	private static final Sort DEFAULT_SORT = Sort.by(Sort.Direction.DESC, "updatedAt");
-	private static final String DEFAULT_SORT_STRING = "updatedAt:desc";
 
 	@Getter
 	@Schema(name = "pageNumber", description = "페이지번호")
@@ -62,14 +61,7 @@ public abstract class SearchRequest implements Serializable {
         this.orders = orders;
 
 		// 정렬
-        Sort sort;
-        if(StringUtils.hasText(this.orders)) {
-			// frontend Orders
-			sort = parseSort();
-		} else {
-			// parse @SearchOrder
-			sort = buildSort();
-		}
+        Sort sort = sort();
 
 		// 페이징
 		if (this.pageSize > 0) {
@@ -78,6 +70,11 @@ public abstract class SearchRequest implements Serializable {
 		} else {
 			pageable = Pageable.unpaged(sort);
 		}
+	}
+
+	@Schema(description = "페이징 여부", hidden = true)
+    public boolean isPageable(){
+		return this.pageSize > 0;
 	}
 
 	// 전체 스펙 생성
@@ -116,6 +113,19 @@ public abstract class SearchRequest implements Serializable {
 	// 페이징 정보 생성
 	public Pageable pageable() {
 		return this.pageable;
+	}
+
+	public Sort sort() {
+		Sort sort;
+		if(StringUtils.hasText(this.orders)) {
+			// frontend Orders
+			sort = parseSort();
+		} else {
+			// parse @SearchOrder
+			sort = buildSort();
+		}
+
+		return sort;
 	}
 
 	// 도메인 정렬 추출

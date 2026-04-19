@@ -1,18 +1,15 @@
 package ${package}.common.entity;
 
-import com.fasterxml.uuid.Generators;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import ${package}.common.context.UserContext;
+import org.springframework.http.HttpStatus;
+
+import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-
 
 @Getter
-@Setter
 @MappedSuperclass
 public abstract class BaseEntity {
 
@@ -30,8 +27,11 @@ public abstract class BaseEntity {
     @Column(name = "updated_by")
     protected String updatedBy;
 
+    @Transient
+    protected HttpStatus status = HttpStatus.PROCESSING;
+
     @PrePersist
-    private void onInsertion(){
+    private void beforeInsertion(){
         this.createdAt = LocalDateTime.now();
         this.createdBy = UserContext.getId();
         this.updatedAt = LocalDateTime.now();
@@ -39,9 +39,24 @@ public abstract class BaseEntity {
     }
 
     @PreUpdate
-    private void onModification(){
+    private void beforeModification(){
         this.updatedAt = LocalDateTime.now();
         this.updatedBy = UserContext.getId();
+    }
+
+    @PostPersist
+    private void afterInsertion(){
+        this.status = HttpStatus.CREATED;
+    }
+
+    @PostUpdate
+    private void afterModification(){
+        this.status = HttpStatus.OK;
+    }
+
+    @PostRemove
+    private void afterDeletion(){
+        this.status = HttpStatus.NO_CONTENT;
     }
 
 }

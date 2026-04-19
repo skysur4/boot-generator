@@ -16,8 +16,8 @@ public class PageableResponse<T> {
     private List<T> content;
 	private long totalElements;
 	private int totalPages;
-	private int number;   // 0‑based
-	private int size;
+	private int currentPage;
+	private int pageSize;
 	private boolean last;
 	private boolean first;
 
@@ -30,7 +30,7 @@ public class PageableResponse<T> {
 				domains,
 				page.getTotalElements(),
 				page.getTotalPages(),
-				page.getNumber(),
+				page.getNumber() + 1,
 				page.getSize(),
 				page.isLast(),
 				page.isFirst()
@@ -51,6 +51,12 @@ public class PageableResponse<T> {
 				false,
 				false
 		);
+	}
+
+	// ---------- 변환 메서드 ----------
+	public static <E, D> D from(E item, Class<D> clazz) {
+		SimpleObjectMapper converter = new SimpleObjectMapper();
+		return converter.map(item, clazz);
 	}
 
 }

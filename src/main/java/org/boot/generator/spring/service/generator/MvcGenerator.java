@@ -46,6 +46,7 @@ public class MvcGenerator {
                             Map<String, Object> map = Maps.newHashMap();
                             map.put("name", GeneratorUtils.toCamel(fk.getColumn()));
                             map.put("column", fk.getColumn());
+                            map.put("refColumn", fk.getRefColumn());
                             map.put("refEntity", GeneratorUtils.toPascal(fk.getRefTable()));
                             map.put("refEntityName", GeneratorUtils.toCamel(fk.getRefTable()));
                             map.put("refEntityPackage", GeneratorUtils.toPackagePath(fk.getRefTable()));
@@ -60,6 +61,7 @@ public class MvcGenerator {
                             Map<String, Object> map = Maps.newHashMap();
                             map.put("name", GeneratorUtils.toCamel(ek.getColumn()));
                             map.put("column", ek.getColumn());
+                            map.put("subColumn", ek.getSubColumn());
                             map.put("subEntity", GeneratorUtils.toPascal(ek.getSubTable()));
                             map.put("subEntityName", GeneratorUtils.toCamel(ek.getSubTable()));
                             map.put("subEntityPackage", GeneratorUtils.toPackagePath(ek.getSubTable()));
@@ -73,6 +75,7 @@ public class MvcGenerator {
                         .map(c -> {
                             Map<String, Object> map = Maps.newHashMap();
                             map.put("name", GeneratorUtils.toCamel(c.getName()));
+                            map.put("pascalName", GeneratorUtils.toPascal(c.getName()));
                             map.put("column", c.getName());
                             map.put("comment", c.getRemarks());
                             map.put("type", c.getJavaType().getSimpleName());
@@ -122,6 +125,9 @@ public class MvcGenerator {
 
                 GeneratorUtils.writeFile(servicePath, "entity", className + JAVA_EXTENSION,
                         templateRenderer.render(project.getArchitecture(), "entity.ftl", dataModel));
+
+                GeneratorUtils.writeFile(servicePath, "entity", className + "Info" + JAVA_EXTENSION,
+                        templateRenderer.render(project.getArchitecture(), "info.ftl", dataModel));
 
                 GeneratorUtils.writeFile(servicePath, "repository", className + "Repository" + JAVA_EXTENSION,
                         templateRenderer.render(project.getArchitecture(), "repository.ftl", dataModel));
